@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant U as Utilisateur
+    participant M as Main
+    participant G as Game
+    participant Gr as Grille
+    participant V as std::vector (Mémoire)
+
+    %% Lancement
+    U->>M: Lancement du programme
+
+    %% RAII : Construction = Initialisation
+    Note over M, V: Phase RAII : Construction atomique
+
+    M->>G: Game(largeur, hauteur)
+    activate G
+    
+    G->>G: initResources() (Chargement Assets)
+    
+    G->>Gr: Grille(largeur, hauteur)
+    activate Gr
+    
+    %% Optimisation clé : Allocation en bloc
+    Note right of Gr: Optimisation : Allocation contiguë unique
+    Gr->>V: m_grid.resize(largeur * hauteur)
+    activate V
+    V-->>Gr: Mémoire allouée (Cellules par défaut MORTES)
+    deactivate V
+
+    %% Configuration interne rapide
+    loop Initialisation Interne (Données)
+        Gr->>Gr: accessCell(i).setCoords(x,y)
+    end
+
+    Gr-->>G: Grille prête
+    deactivate Gr
+
+    G-->>M: Game prêt à jouer
+    deactivate G
+
+    Note over M: Le jeu démarre immédiatement (Pas de init() séparé)

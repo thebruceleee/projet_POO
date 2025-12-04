@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Cellule.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+    <ClCompile Include="Grille.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjetSFML.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+    <ClCompile Include="Regle.cpp">
+      <Filter>src/</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src/">
+      <UniqueIdentifier>{0b98e368-2c30-4ca9-a7ff-8d1c450517de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include/">
+      <UniqueIdentifier>{ef6d8fdd-3aac-45bc-8b93-4bdbeeaabe17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets/">
+      <UniqueIdentifier>{a4684793-f93a-46cd-86bb-36f120dbc888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="docs/">
+      <UniqueIdentifier>{ee00f849-86ea-471c-b25f-b936555279ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build/">
+      <UniqueIdentifier>{1d9f445f-40c2-429e-9f09-6ac495b38c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets/\fonts">
+      <UniqueIdentifier>{181502f8-7081-4255-80e0-b137dff44af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets/\music">
+      <UniqueIdentifier>{626be2df-879e-44b5-b4ff-34e531e93443}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cellule.hpp">
+      <Filter>include/</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.hpp">
+      <Filter>include/</Filter>
+    </ClInclude>
+    <ClInclude Include="Grille.hpp">
+      <Filter>include/</Filter>
+    </ClInclude>
+    <ClInclude Include="Regle.hpp">
+      <Filter>include/</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="MermaidActivite.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="MermaidRun.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="MermaidClass.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="mermaid sequence SFML.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="mermaid sequence init.txt">
+      <Filter>docs/</Filter>
+    </Text>
+    <Text Include="mermaid sequence iteration.txt">
+      <Filter>docs/</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="kahoot_music.ogg">
+      <Filter>assets/\music</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="AstonScript.ttf">
+      <Filter>assets/\fonts</Filter>
+    </Font>
+  </ItemGroup>
+</Project>

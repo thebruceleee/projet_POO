@@ -1,0 +1,39 @@
+graph TD
+    A([Lancement Programme]) --> B[Init Ressources RAII<br/>(Fenetre, Textures, Sons)]
+    B --> C[Creation Game & Grille<br/>(Vecteur 1D, Memoire contigue)]
+    C --> D[Init Regles par defaut<br/>(Conway)]
+
+    D --> E{Boucle Principale<br/>While Window Open}
+
+    %% BLOQUE 1 : INPUTS
+    E -->|Oui| F[Polling Evenements<br/>(PollEvent)]
+    F --> G{Type Evenement}
+    G -->|Clavier: Espace| H[Basculer Pause/Play]
+    G -->|Clavier: S| I[Export vers Fichier Texte<br/>(SaveState)]
+    G -->|Clavier: C| J[Clear Grille]
+    G -->|Clavier: M/P| K[Gestion Musique]
+    G -->|Souris: Clic| L[Dessin Interactif<br/>(Modification directe Grille)]
+    
+    %% BLOQUE 2 : UPDATE (LOGIQUE)
+    L --> M{Timer ecoule ?<br/>(Stabilisation FPS)}
+    H --> M
+    I --> M
+    J --> M
+    K --> M
+    
+    M -->|Non| O[Sauter Physique]
+    M -->|Oui| N{Jeu en Pause ?}
+    
+    N -->|Oui| O
+    N -->|Non| P[Game::update<br/>(Calcul Voisins + Application Regles)]
+    P --> O
+
+    %% BLOQUE 3 : RENDER (AFFICHAGE)
+    O --> Q[Game::render]
+    Q --> R[Dessin Grille<br/>Optimisation Viewport]
+    R --> S[Dessin UI & Overlay]
+    S --> T[Window.Display]
+
+    T --> E
+
+    E -->|Non| U([Fermeture & Nettoyage Auto])

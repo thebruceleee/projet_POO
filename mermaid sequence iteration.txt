@@ -1,0 +1,57 @@
+sequenceDiagram
+    participant M as Main
+    participant G as Game
+    participant GR as Grille
+    participant B as Buffer (std::vector)
+    participant R as Regles
+
+    M->>G: update(const Regles& r)
+    activate G
+
+    %% PREPARATION
+    Note over G, B: Allocation Mémoire (Stack/Vector)
+    G->>B: resize(Largeur * Hauteur)
+
+    %% PASSE 1 : ANALYSE (LECTURE SEULE)
+    Note over G, GR: PASSE 1 : Analyse & Comptage
+    
+    loop Pour chaque index i (0 à N)
+        G->>GR: accessCell(i)
+        GR-->>G: ref Cell
+        
+        alt Est Obstacle ?
+            G->>B: store(i, -1)
+        else Cellule Normale
+            G->>GR: compterVoisinsVivants(x, y)
+            activate GR
+            GR-->>G: int nbVoisins
+            deactivate GR
+            G->>B: store(i, nbVoisins)
+        end
+    end
+
+    %% PASSE 2 : MUTATION (ECRITURE)
+    Note over G, GR: PASSE 2 : Application des Règles
+    
+    loop Pour chaque index i
+        G->>B: load(i)
+        B-->>G: nbVoisins
+
+        alt nbVoisins == -1 (Obstacle)
+            Note right of G: Ignorer (Rien à faire)
+        else Traitement Standard
+            G->>GR: accessCell(i)
+            GR-->>G: ref Cell (c)
+
+            opt c.estVivante() && (nb < min || nb > max)
+                G->>GR: c.rendreMorte() (Enum = MORTE)
+            end
+
+            opt !c.estVivante() && (nb == naissance)
+                G->>GR: c.rendreVivante() (Enum = VIVANTE)
+            end
+        end
+    end
+
+    deactivate G
+    G-->>M: Simulation terminée

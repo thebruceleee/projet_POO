@@ -1,0 +1,63 @@
+sequenceDiagram
+    participant U as Utilisateur
+    participant M as Main (Orchestrateur)
+    participant R as Regles (Config)
+    participant G as Game (Moteur)
+    participant Gr as Grille (Data)
+    participant W as RenderWindow (SFML)
+
+    %% INITIALISATION
+    Note over M, W: Phase d'Initialisation (RAII)
+    M->>W: Création Fenêtre (60 FPS limit)
+    M->>G: Constructeur(L, H)
+    activate G
+    G->>G: initResources() (Polices, Musique)
+    G->>Gr: Allocation Vector 1D
+    deactivate G
+    M->>R: Constructeur (Défaut Conway)
+
+    %% BOUCLE PRINCIPALE
+    loop While Window Open
+        
+        %% 1. INPUTS
+        Note over M: 1. Gestion des Entrées (Polling)
+        M->>W: pollEvent()
+        
+        alt Event: Clavier / Souris
+            U->>M: Action (Pause, Mode, Clic)
+            
+            opt Clic Souris (Dessin)
+                M->>G: getGrille()
+                G-->>M: Ref Grille
+                M->>Gr: accessCell(x,y).rendreVivante()
+                Note right of M: Interaction directe pour ergonomie
+            end
+        end
+
+        %% 2. UPDATE (PHYSIQUE)
+        Note over M: 2. Mise à jour (Fixed Time Step)
+        
+        M->>M: Vérifier Timer (Clock)
+        alt Temps écoulé > 0.1s
+            M->>G: update(const Regles&)
+            activate G
+            G->>Gr: compterVoisinsVivants() (Passe 1)
+            G->>Gr: Appliquer Règles (Passe 2)
+            deactivate G
+        end
+
+        %% 3. RENDER (AFFICHAGE)
+        Note over M: 3. Affichage (Chaque Frame)
+        M->>G: render(Window)
+        activate G
+        G->>W: clear()
+        G->>W: draw(Grille)
+        G->>W: draw(Interface UI)
+        G->>W: display()
+        deactivate G
+
+    end
+
+    %% NETTOYAGE
+    M->>W: close()
+    Note over M, G: Destructeurs automatiques (Smart Memory)

@@ -1,0 +1,95 @@
+classDiagram
+    %% =========================
+    %% Classes Principales
+    %% =========================
+    
+    class Game {
+        -Grille m_grille
+        -sf::Music m_music
+        -sf::Font m_fontRoboto
+        -sf::Font m_fontScript
+        
+        +Game(int largeur, int hauteur)
+        +~Game()
+        
+        +void update(const Regles& regles)
+        +void render(sf::RenderWindow& window, int cellSize, int modeJeu)
+        +void saveToText(int generation, string filename) const
+        
+        +void startMusic()
+        +void stopMusic()
+        +Grille& getGrille()
+    }
+
+    class Grille {
+        -int m_largeur
+        -int m_hauteur
+        -vector~Cell~ m_grid
+        
+        -void initialiserGrille()
+        
+        +Grille(int w, int h)
+        +int compterVoisinsVivants(int x, int y) const
+        +Cell& accessCell(int x, int y)
+        +int getLargeur() const
+        +int getHauteur() const
+    }
+
+    class Cell {
+        -int m_x
+        -int m_y
+        -EtatCellule m_etat
+        
+        +Cell(int x, int y, EtatCellule etat)
+        
+        +bool estVivante() const
+        +bool estObstacle() const
+        
+        +void rendreVivante()
+        +void rendreMorte()
+        +void setObstacle(bool actif, bool vivant)
+    }
+
+    class Regles {
+        -LoisBiologiques m_lois
+        -bool m_modeGraphique
+        -unsigned int m_maxIterations
+        
+        +Regles()
+        +void setLois(LoisBiologiques lois)
+        +const LoisBiologiques& getLois() const
+    }
+
+    class LoisBiologiques {
+        <<struct>>
+        +unsigned int isolement
+        +unsigned int surpop
+        +unsigned int naissance
+    }
+
+    class EtatCellule {
+        <<enumeration>>
+        MORTE
+        VIVANTE
+        OBSTACLE_VIVANT
+        OBSTACLE_MORT
+    }
+
+    %% =========================
+    %% Relations
+    %% =========================
+
+    %% Composition forte (Le jeu possède la grille)
+    Game *-- Grille : m_grille
+
+    %% Composition forte optimisée (Vecteur contigu)
+    Grille "1" *-- "1..*" Cell : m_grid (std::vector)
+
+    %% Dépendance (Le jeu lit les règles pour update)
+    Game ..> Regles : utilise (update)
+
+    %% Association (Cellule contient un Enum, pas un pointeur)
+    Cell *-- EtatCellule : m_etat
+
+    %% Aggregation (Regles contient la struct Lois)
+    Regles *-- LoisBiologiques : m_lois

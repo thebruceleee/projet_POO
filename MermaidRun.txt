@@ -1,0 +1,62 @@
+graph TD
+    %% INITIALISATION
+    A([Debut Game::update]) --> B[Allocation std::vector Buffer taille W*H]
+    B --> C[Boucle Y de 0 a Hauteur]
+    
+    %% PASSE 1 : ANALYSE (LECTURE SEULE)
+    subgraph PASSE 1 : CALCUL & MISE EN TAMPON
+        C --> D{Encore Ligne Y ?}
+        D -->|Non| Z([Fin Passe 1])
+        D -->|Oui| E[Boucle X de 0 a Largeur]
+        
+        E --> F{Encore Colonne X ?}
+        F -->|Non| Y_INC[Incrementer Y]
+        Y_INC --> D
+
+        F -->|Oui| G[Calcul Index Lineaire : idx = Y * W + X]
+        G --> H{Cellule est Obstacle ?}
+        
+        H -->|Oui| I[Buffer[idx] = -1]
+        H -->|Non| J[Appel Grille::compterVoisinsVivants x,y]
+        J --> K[Buffer[idx] = resultat]
+        
+        I --> L[Incrementer X]
+        K --> L
+        L --> F
+    end
+
+    %% PASSE 2 : MUTATION (ECRITURE)
+    Z --> A2([Debut Passe 2])
+    A2 --> B2[Boucle Y de 0 a Hauteur]
+    
+    subgraph PASSE 2 : APPLICATION REGLES
+        B2 --> C2{Encore Ligne Y ?}
+        C2 -->|Non| Z2([Fin Mise a Jour])
+        C2 -->|Oui| D2[Boucle X de 0 a Largeur]
+        
+        D2 --> E2{Encore Colonne X ?}
+        E2 -->|Non| Y2_INC[Incrementer Y]
+        Y2_INC --> C2
+
+        E2 -->|Oui| F2[Calcul Index Lineaire & Lecture Buffer[idx]]
+        F2 --> G2{Voisins == -1 ? Obstacle}
+        G2 -->|Oui| NEXT[Passer a suivante]
+        
+        G2 -->|Non| H2{Cellule Vivante ?}
+        
+        %% Logique Survie / Mort
+        H2 -->|Oui| I2{Voisins < Min OU > Max ?}
+        I2 -->|Oui| J2[Cellule.setEtat MORTE]
+        I2 -->|Non| NEXT
+        
+        %% Logique Naissance
+        H2 -->|Non| K2{Voisins == Naissance ?}
+        K2 -->|Oui| L2[Cellule.setEtat VIVANTE]
+        K2 -->|Non| NEXT
+        
+        J2 --> NEXT
+        L2 --> NEXT
+        
+        NEXT --> M2[Incrementer X]
+        M2 --> E2
+    end
