@@ -1,2 +1,1 @@
-﻿  ProjetSFML.cpp
-C:\Users\arthu\Documents\projet POO\ProjetSFML\ProjetSFML\ProjetSFML.cpp(1,10): error C1083: Impossible d'ouvrir le fichier include : 'SFML/Graphics.hpp' : No such file or directory
+﻿  ProjetSFML.vcxproj -> C:\Users\arthu\Documents\projet POO\ProjetSFML\ProjetSFML\x64\Debug\ProjetSFML.exe

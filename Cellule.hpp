@@ -44,8 +44,11 @@ public:
     bool estObstacle() const;
 
     // --- Mutateurs (Actions) ---
-    // Ces méthodes remplacent les "new/delete" de l'ancienne version
 
+    void setCoords(int x, int y) {
+        m_x = x;
+        m_y = y;
+    }
     void rendreVivante();
     void rendreMorte();
 

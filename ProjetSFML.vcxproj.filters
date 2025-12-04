@@ -10,9 +10,6 @@
     <ClCompile Include="Grille.cpp">
       <Filter>src/</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>src/</Filter>
-    </ClCompile>
     <ClCompile Include="ProjetSFML.cpp">
       <Filter>src/</Filter>
     </ClCompile>
